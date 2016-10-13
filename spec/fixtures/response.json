@@ -1,0 +1,11 @@
+{
+  "success":true,
+  "terms":"https:\/\/currencylayer.com\/terms",
+  "privacy":"https:\/\/currencylayer.com\/privacy",
+  "timestamp":1464266106,
+  "source":"USD",
+  "quotes":{
+    "USDAUD":1.320898,
+    "USDEUR":0.907601
+  }
+}
