@@ -16,12 +16,10 @@ class Money
         private
 
         def exchange_rates
-          @usd_exchange_rates ||= begin
-            url = "#{API_ENDPOINT}?access_key=#{@api_key}"
-            data = JSON.parse(open(url).read)
-            data['quotes'].each_with_object('USD' => 1) do |(code, rate), h|
-              h[code[3, 3]] = BigDecimal.new(rate.to_s)
-            end
+          url = "#{API_ENDPOINT}?access_key=#{@api_key}"
+          data = JSON.parse(open(url).read)
+          data['quotes'].each_with_object('USD' => 1) do |(code, rate), h|
+            h[code[3, 3]] = BigDecimal.new(rate.to_s)
           end
         end
       end
