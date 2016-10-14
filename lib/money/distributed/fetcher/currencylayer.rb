@@ -5,7 +5,9 @@ class Money
   module Distributed
     module Fetcher
       # Currencylayer rates fetcher
-      class Currencylayer < Base
+      class Currencylayer
+        include Base
+
         API_ENDPOINT = 'http://apilayer.net/api/live'.freeze
 
         def initialize(api_key, bank = nil)
