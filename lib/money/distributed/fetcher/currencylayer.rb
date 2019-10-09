@@ -21,7 +21,7 @@ class Money
           url = "#{API_ENDPOINT}?access_key=#{@api_key}"
           data = JSON.parse(open(url).read)
           data['quotes'].each_with_object('USD' => 1) do |(code, rate), h|
-            h[code[3, 3]] = BigDecimal.new(rate.to_s)
+            h[code[3, 3]] = BigDecimal(rate.to_s)
           end
         end
       end
