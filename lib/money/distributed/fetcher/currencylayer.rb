@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'money-distributed'
 require 'json'
 
@@ -8,7 +10,7 @@ class Money
       class Currencylayer
         include Base
 
-        API_ENDPOINT = 'http://apilayer.net/api/live'.freeze
+        API_ENDPOINT = 'https://api.apilayer.com/currency_data/live?source=USD&currencies='
 
         def initialize(api_key, bank = nil)
           super(bank)
@@ -18,11 +20,25 @@ class Money
         private
 
         def exchange_rates
-          url = "#{API_ENDPOINT}?access_key=#{@api_key}"
-          data = JSON.parse(open(url).read)
+          data = currency_data
+
           data['quotes'].each_with_object('USD' => 1) do |(code, rate), h|
             h[code[3, 3]] = BigDecimal(rate.to_s)
           end
+        end
+
+        def currency_data
+          url = URI(API_ENDPOINT)
+          https = Net::HTTP.new(url.host, url.port)
+
+          https.use_ssl = true
+
+          request = Net::HTTP::Get.new(url)
+
+          request['apikey'] = @api_key
+          response = https.request(request)
+
+          JSON.parse(response.read_body)
         end
       end
     end
