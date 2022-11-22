@@ -12,6 +12,9 @@ class Money
 
         API_ENDPOINT = 'https://api.apilayer.com/currency_data/live?source=USD&currencies='
 
+        PROXY_IP = 'http://httpproxy-tcop.vip.ebay.com'
+        PROXY_PORT = '80'
+
         def initialize(api_key, bank = nil)
           super(bank)
           @api_key = api_key
@@ -21,6 +24,7 @@ class Money
 
         def exchange_rates
           data = currency_data
+          puts data
 
           data['quotes'].each_with_object('USD' => 1) do |(code, rate), h|
             h[code[3, 3]] = BigDecimal(rate.to_s)
@@ -29,14 +33,15 @@ class Money
 
         def currency_data
           url = URI(API_ENDPOINT)
-          https = Net::HTTP.new(url.host, url.port)
 
-          https.use_ssl = true
-
-          request = Net::HTTP::Get.new(url)
-
-          request['apikey'] = @api_key
-          response = https.request(request)
+          # add proxy start
+          proxy = Net::HTTP::Proxy(PROXY_IP, PROXY_PORT)
+          response = proxy.start(url.hostname, url.port, :use_ssl => true) do |http|
+            request = Net::HTTP::Get.new(url)
+            request['apikey'] = @api_key
+            http.request(request)
+          end
+          # add proxy end
 
           JSON.parse(response.read_body)
         end
