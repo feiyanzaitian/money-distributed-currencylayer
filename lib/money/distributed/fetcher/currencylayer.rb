@@ -12,7 +12,7 @@ class Money
 
         API_ENDPOINT = 'https://api.apilayer.com/currency_data/live?source=USD&currencies='
 
-        PROXY_IP = 'http://httpproxy-tcop.vip.ebay.com'
+        PROXY_IP = 'httpproxy-tcop.vip.ebay.com'
         PROXY_PORT = '80'
 
         def initialize(api_key, bank = nil)
