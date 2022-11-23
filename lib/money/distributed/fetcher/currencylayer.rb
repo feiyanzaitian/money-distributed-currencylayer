@@ -25,9 +25,7 @@ class Money
         def exchange_rates
           data = currency_data
           puts "currency data="
-          data.each do |key, value|
-            puts key + ' : ' + value
-          end
+          puts JSON.pretty_generate(data)
 
           data['quotes'].each_with_object('USD' => 1) do |(code, rate), h|
             h[code[3, 3]] = BigDecimal(rate.to_s)
@@ -45,7 +43,6 @@ class Money
             http.request(request)
           end
           # add proxy end
-          puts response.code
           JSON.parse(response.body)
         end
       end
