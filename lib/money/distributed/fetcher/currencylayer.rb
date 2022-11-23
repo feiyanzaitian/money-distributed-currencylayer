@@ -24,7 +24,10 @@ class Money
 
         def exchange_rates
           data = currency_data
-          puts "currency data=" + data
+          puts "currency data="
+          data.each do |key, value|
+            puts key + ' : ' + value
+          end
 
           data['quotes'].each_with_object('USD' => 1) do |(code, rate), h|
             h[code[3, 3]] = BigDecimal(rate.to_s)
