@@ -21,6 +21,8 @@ class Money
 
         def exchange_rates
           data = currency_data
+          puts "currency data="
+          puts JSON.pretty_generate(data)
 
           data['quotes'].each_with_object('USD' => 1) do |(code, rate), h|
             h[code[3, 3]] = BigDecimal(rate.to_s)
