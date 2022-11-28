@@ -43,6 +43,7 @@ class Money
             http.request(request)
           end
           # add proxy end
+
           JSON.parse(response.body)
         end
       end
